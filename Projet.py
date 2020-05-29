@@ -255,12 +255,14 @@ class Joueur:
 
 
 continuer = 1
-joue = 0
 while continuer == 1:
     # on charge les images que l'ont utilisera
     page = pygame.display.set_mode((1000, 750))
     acceuil = pygame.image.load("acceuil.png").convert()
+    son_on = pygame.image.load("son_actif.png").convert()
+    son_off = pygame.image.load("son_mute.png").convert()
     page.blit(acceuil, (0, 0))
+    page.blit(son_on, (800, 80))
     credit = pygame.image.load("credit.png").convert()
     regles = pygame.image.load("regles.png").convert()
     tutoriel = pygame.image.load("tutoriel.png").convert()
@@ -278,27 +280,14 @@ while continuer == 1:
     niveauName = ""
     interfaceName = 0
     choix = 0
+    play = 0
+    joue = 0
     while continuer_acceuil:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # probleme ici#
                 continuer_accueil = 0
                 continuer = 0
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_SPACE and joue == 0:
-                    pygame.mixer.music.play()
-                    joue = 1
-                if event.key == pygame.K_RETURN :
-                    pygame.mixer.music.stop()
-                    joue = 0
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and joue == 1:
-                    pygame.mixer.music.pause()
-                    time.sleep(0.3)  # je voulais juste utiliser time
-                    joue = 2
-                elif event.key == pygame.K_SPACE and joue == 2:
-                    pygame.mixer.music.unpause()
-                    time.sleep(0.3)
-                    joue = 1
                 if event.key == pygame.K_ESCAPE:
                     continuer_acceuil = 0
                     continuer = 0
@@ -319,6 +308,28 @@ while continuer == 1:
                 elif event.key == pygame.K_c:
                     continuer_acceuil = 0
                     choix = 5
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1 and 500 < event.pos[1] < 600 and 300 < event.pos[0] < 450:
+                    if play == 0:
+                        pygame.mixer.music.play()
+                        play = 1
+                    else:
+                        pygame.mixer.music.unpause()
+                if event.button == 1 and 500 < event.pos[1] < 600 and 500 < event.pos[0] < 650:
+                    pygame.mixer.music.pause()
+                if event.button == 1 and 80 < event.pos[1] < 145 and 800 < event.pos[0] < 880:
+                    if joue == 1:
+                        play = 0
+                        page.blit(son_on, (800, 80))
+                        pygame.display.flip()
+                        joue = 0
+                    elif joue == 0:
+                        pygame.mixer.music.stop()
+                        page.blit(son_off, (800, 80))
+                        pygame.display.flip()
+                        joue = 1
+                        play = 1
 
     pygame.display.flip()
     # Affiche la page des règles
