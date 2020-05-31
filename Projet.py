@@ -1,5 +1,5 @@
 import pygame
-import time
+import sys
 from pygame.locals import *
 pygame.init()
 
@@ -284,13 +284,11 @@ while continuer == 1:
     joue = 0
     while continuer_acceuil:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:  # probleme ici#
-                continuer_accueil = 0
-                continuer = 0
+            if event.type == pygame.QUIT:
+                sys.exit(0)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    continuer_acceuil = 0
-                    continuer = 0
+                    sys.exit(0)
                 # Permet d'accéder aux règles
                 elif event.key == pygame.K_r:
                     continuer_acceuil = 0
@@ -320,16 +318,16 @@ while continuer == 1:
                     pygame.mixer.music.pause()
                 if event.button == 1 and 80 < event.pos[1] < 145 and 800 < event.pos[0] < 880:
                     if joue == 1:
-                        play = 0
+                        pygame.mixer.music.set_volume(1)
                         page.blit(son_on, (800, 80))
                         pygame.display.flip()
                         joue = 0
                     elif joue == 0:
-                        pygame.mixer.music.stop()
+                        pygame.mixer.music.set_volume(0.0)
                         page.blit(son_off, (800, 80))
                         pygame.display.flip()
                         joue = 1
-                        play = 1
+
 
     pygame.display.flip()
     # Affiche la page des règles
@@ -344,6 +342,8 @@ while continuer == 1:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_n:
                         choix = 0
+                if event.type == pygame.QUIT:
+                    sys.exit(0)
     # Affiche les crédits
     while choix == 5:
 
@@ -355,6 +355,8 @@ while continuer == 1:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_n:
                         choix = 0
+                if event.type == pygame.QUIT :
+                    sys.exit(0)
     # Affiche le tutoriel (1ère page)
     while choix == 3:
         page.blit(tutoriel, (0, 0))
@@ -362,8 +364,7 @@ while continuer == 1:
         while choix == 3:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    continuer = 0
-                    choix = 0
+                    sys.exit(0)
                 # Permet d'accéder a la deuxième page du tutoriel
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_e:
@@ -377,8 +378,7 @@ while continuer == 1:
         while choix == 6:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    continuer = 0
-                    choix = 0
+                    sys.exit(0)
                 # Permet d'accéder au  jeu avec le modéle du tutoriel choisi
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_2:
@@ -411,8 +411,7 @@ while continuer == 1:
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    continuer_jeu = 0
-                    continuer = 0
+                    sys.exit(0)
 
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
